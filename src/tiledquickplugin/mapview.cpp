@@ -58,10 +58,37 @@ void MapView::setVisibleArea(const QRectF &visibleArea)
     emit visibleAreaChanged();
 }
 
-QPoint MapView::viewPosToMapPos(const QPoint &viewPos) const
+QPointF MapView::viewToTileCoords(qreal x, qreal y) const
 {
-    mMapItem->renderer();
-    return viewPos;
+    if (!mMapItem)
+        return QPointF(x, y);
+
+    const QPointF relativeToMap = mapToItem(mMapItem, QPointF(x, y));
+    return mMapItem->renderer()->screenToTileCoords(relativeToMap);
+}
+
+QPointF MapView::tileToViewCoords(qreal x, qreal y) const
+{
+    if (!mMapItem)
+        return QPointF(x, y);
+
+    return mMapItem->renderer()->tileToScreenCoords(x, y);
+}
+
+QPointF MapView::viewToPixelCoords(qreal x, qreal y) const
+{
+    if (!mMapItem)
+        return QPointF(x, y);
+
+    return mMapItem->renderer()->screenToPixelCoords(x, y);
+}
+
+QPointF MapView::pixelToViewCoords(qreal x, qreal y) const
+{
+    if (!mMapItem)
+        return QPointF(x, y);
+
+    return mMapItem->renderer()->pixelToScreenCoords(x, y);
 }
 
 void MapView::componentComplete()

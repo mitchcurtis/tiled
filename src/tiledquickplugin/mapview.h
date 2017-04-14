@@ -47,7 +47,10 @@ public:
     QRectF visibleArea() const;
     void setVisibleArea(const QRectF &visibleArea);
 
-    Q_INVOKABLE QPoint viewPosToMapPos(const QPoint &viewPos) const;
+    Q_INVOKABLE QPointF viewToTileCoords(qreal x, qreal y) const;
+    Q_INVOKABLE QPointF tileToViewCoords(qreal x, qreal y) const;
+    Q_INVOKABLE QPointF viewToPixelCoords(qreal x, qreal y) const;
+    Q_INVOKABLE QPointF pixelToViewCoords(qreal x, qreal y) const;
 
     void componentComplete();
 
