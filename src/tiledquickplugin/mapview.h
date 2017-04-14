@@ -1,6 +1,6 @@
 /*
- * mapitem.h
- * Copyright 2014, Thorbjørn Lindeijer <bjorn@lindeijer.nl>
+ * mapview.h
+ * Copyright 2017, Mitch Curtis
  *
  * This file is part of Tiled Quick.
  *
@@ -18,70 +18,48 @@
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TILEDQUICK_MAPITEM_H
-#define TILEDQUICK_MAPITEM_H
+#ifndef TILEDQUICK_MAPVIEW_H
+#define TILEDQUICK_MAPVIEW_H
 
 #include <QQuickItem>
 
-namespace Tiled {
-class Map;
-class MapRenderer;
-class Tileset;
-class TileLayer;
-} // namespace Tiled
-
 namespace TiledQuick {
 
-class TileItem;
-class TileLayerItem;
+class MapItem;
 
 /**
- * A declarative item that displays a map.
+ * A declarative item that acts a viewport over a map.
  */
-class MapItem : public QQuickItem
+class MapView : public QQuickItem
 {
     Q_OBJECT
-    Q_ENUMS(Status)
 
-    Q_PROPERTY(Tiled::Map *map READ map WRITE setMap NOTIFY mapChanged)
+    // The namespace qualification is required here. See: https://bugreports.qt.io/browse/QTBUG-15459
+    Q_PROPERTY(TiledQuick::MapItem *mapItem READ mapItem WRITE setMapItem NOTIFY mapItemChanged)
     Q_PROPERTY(QRectF visibleArea READ visibleArea WRITE setVisibleArea NOTIFY visibleAreaChanged)
 
 public:
-    explicit MapItem(QQuickItem *parent = 0);
+    explicit MapView(QQuickItem *parent = 0);
 
-    Tiled::Map *map() const;
-    void setMap(Tiled::Map *map);
+    MapItem *mapItem() const;
+    void setMapItem(MapItem *mapItem);
 
-    const QRectF &visibleArea() const;
+    QRectF visibleArea() const;
     void setVisibleArea(const QRectF &visibleArea);
-    QRect visibleTileArea(const Tiled::TileLayer *layer) const;
 
-    QRectF boundingRect() const;
-
-    Tiled::MapRenderer *renderer();
+    Q_INVOKABLE QPoint viewPosToMapPos(const QPoint &viewPos) const;
 
     void componentComplete();
 
 signals:
-    void mapChanged();
+    void mapItemChanged();
     void visibleAreaChanged();
 
 private:
-    void refresh();
-
-    Tiled::Map *mMap;
+    MapItem *mMapItem;
     QRectF mVisibleArea;
-
-    Tiled::MapRenderer *mRenderer;
-    QList<TileLayerItem*> mTileLayerItems;
 };
-
-inline const QRectF &MapItem::visibleArea() const
-{ return mVisibleArea; }
-
-inline Tiled::Map *MapItem::map() const
-{ return mMap; }
 
 } // namespace TiledQuick
 
-#endif // TILEDQUICK_MAPITEM_H
+#endif // TILEDQUICK_MAPVIEW_H

@@ -26,6 +26,7 @@
 
 #include "mapitem.h"
 #include "maploader.h"
+#include "mapview.h"
 
 #include <qqml.h>
 
@@ -41,4 +42,5 @@ void TiledQuickPlugin::registerTypes(const char *uri)
 
     qmlRegisterType<TiledQuick::MapLoader>(uri, 1, 0, "MapLoader");
     qmlRegisterType<TiledQuick::MapItem>(uri, 1, 0, "MapItem");
+    qmlRegisterType<TiledQuick::MapView>(uri, 1, 0, "MapView");
 }

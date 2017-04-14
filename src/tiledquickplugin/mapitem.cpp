@@ -91,6 +91,11 @@ QRectF MapItem::boundingRect() const
     return QRectF(QPointF(), mRenderer->mapSize());
 }
 
+Tiled::MapRenderer *MapItem::renderer()
+{
+    return mRenderer;
+}
+
 void MapItem::componentComplete()
 {
     QQuickItem::componentComplete();

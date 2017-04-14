@@ -37,6 +37,7 @@ SOURCES += \
     tiledquickplugin.cpp \
     mapitem.cpp \
     maploader.cpp \
+    mapview.cpp \
     tilelayeritem.cpp \
     tilesnode.cpp
 
@@ -44,6 +45,7 @@ HEADERS += \
     tiledquickplugin.h \
     mapitem.h \
     maploader.h \
+    mapview.h \
     tilelayeritem.h \
     tilesnode.h
 
