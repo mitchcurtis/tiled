@@ -5,3 +5,8 @@ CONFIG   += ordered
 
 SUBDIRS = \
     libtiled
+
+minQtVersion(5, 4, 0) {
+    SUBDIRS += \
+        tiledquickplugin
+}
