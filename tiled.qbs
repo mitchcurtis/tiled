@@ -16,20 +16,7 @@ Project {
     property bool windowsInstaller: false
 
     references: [
-        "dist/archive.qbs",
-        "dist/distribute.qbs",
-        "dist/win/installer.qbs",
-        "src/automappingconverter",
         "src/libtiled",
-        "src/plugins",
-        "src/qtpropertybrowser",
-        "src/qtsingleapplication",
-        "src/terraingenerator",
-        "src/tiled",
-        "src/tiledquick",
-        "src/tiledquickplugin",
-        "src/tmxrasterizer",
-        "src/tmxviewer",
-        "translations"
+        "src/tiledquickplugin"
     ]
 }
