@@ -2,7 +2,7 @@ import qbs 1.0
 
 DynamicLibrary {
     targetName: "tiledquickplugin"
-    builtByDefault: false
+//    builtByDefault: false
 
     Depends { name: "libtiled" }
     Depends { name: "libtiledquick" }
@@ -30,8 +30,6 @@ DynamicLibrary {
         "tiledquickplugin.h"
     ]
 
-    property string installBase: qbs.targetOS.contains("darwin") ? "Tiled Quick.app/Contents/" : ""
-
     Group {
         name: "qmldir"
         files: "qmldir"
@@ -40,7 +38,7 @@ DynamicLibrary {
 
     Group {
         qbs.install: true
-        qbs.installDir: installBase + "qml/org/mapeditor/Tiled"
+        qbs.installDir: "qml/org/mapeditor/Tiled"
         fileTagsFilter: ["dynamiclibrary", "qmldir"]
     }
 }

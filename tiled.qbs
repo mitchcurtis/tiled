@@ -17,23 +17,8 @@ Project {
     property string openSslPath: Environment.getEnv("OPENSSL_PATH")
 
     references: [
-        "dist/archive.qbs",
-        "dist/distribute.qbs",
-        "dist/win/installer.qbs",
-        "docs",
         "src/libtiled",
         "src/libtiledquick",
-        "src/karchive",
-        "src/plugins",
-        "src/qtpropertybrowser",
-        "src/qtsingleapplication",
-        "src/terraingenerator",
-        "src/tiled",
-        "src/tiledquick",
-        "src/tiledquickplugin",
-        "src/tmxrasterizer",
-        "src/tmxviewer",
-        "tests",
-        "translations"
+        "src/tiledquickplugin"
     ]
 }
