@@ -16,21 +16,21 @@ Project {
     property bool enableZstd: false
 
     references: [
-        "dist/archive.qbs",
-        "dist/distribute.qbs",
-        "dist/win/installer.qbs",
-        "docs",
+//        "dist/archive.qbs",
+//        "dist/distribute.qbs",
+//        "dist/win/installer.qbs",
+//        "docs",
         "src/libtiled",
-        "src/plugins",
-        "src/qtpropertybrowser",
-        "src/qtsingleapplication",
-        "src/terraingenerator",
-        "src/tiled",
-        "src/tiledquick",
+//        "src/plugins",
+//        "src/qtpropertybrowser",
+//        "src/qtsingleapplication",
+//        "src/terraingenerator",
+//        "src/tiled",
+//        "src/tiledquick",
         "src/tiledquickplugin",
-        "src/tmxrasterizer",
-        "src/tmxviewer",
-        "tests",
-        "translations"
+//        "src/tmxrasterizer",
+//        "src/tmxviewer",
+//        "tests",
+//        "translations"
     ]
 }

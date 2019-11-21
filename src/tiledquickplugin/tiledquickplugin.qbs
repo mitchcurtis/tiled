@@ -2,7 +2,7 @@ import qbs 1.0
 
 DynamicLibrary {
     targetName: "tiledquickplugin"
-    builtByDefault: false
+//    builtByDefault: false
 
     Depends { name: "libtiled" }
     Depends {
@@ -39,7 +39,7 @@ DynamicLibrary {
         "tilesnode.h",
     ]
 
-    property string installBase: qbs.targetOS.contains("darwin") ? "Tiled Quick.app/Contents/" : ""
+    property string installBase: qbs.targetOS.contains("darwin") ? "tshnm-iso.app/Contents/MacOS/" : ""
 
     Group {
         name: "qmldir"
