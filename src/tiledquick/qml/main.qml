@@ -125,6 +125,18 @@ ApplicationWindow {
                 font.family: fontAwesomeLoader.name
                 text: FontAwesome.open
             }
+
+            ToolSeparator {}
+
+            ToolButton {
+                action: openAction
+                font.family: fontAwesomeLoader.name
+                text: FontAwesome.stampBrush
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
         }
     }
 

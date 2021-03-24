@@ -17,6 +17,12 @@
       "css": "floppy",
       "code": 59393,
       "src": "fontawesome"
+    },
+    {
+      "uid": "d0df4d152daa276ccf31ac968c1dd103",
+      "css": "joystick",
+      "code": 62740,
+      "src": "mfglabs"
     }
   ]
 }
