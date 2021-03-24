@@ -1,5 +1,5 @@
 import QtQuick 2.10
-import QtQuick.Controls 2.3
+import QtQuick.Controls 2.13
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.11
 import org.mapeditor.Tiled 1.0 as Tiled
@@ -132,85 +132,97 @@ ApplicationWindow {
         id: mapLoader
     }
 
-    Item {
-        id: mapView
-
-        scale: 1 / Screen.devicePixelRatio
-        width: parent.width * Screen.devicePixelRatio
-        height: parent.height * Screen.devicePixelRatio
-        transformOrigin: Item.TopLeft
+    SplitView {
+        anchors.fill: parent
 
         Item {
-            id: mapContainer
+            id: mapView
 
-            ParallelAnimation {
-                id: containerAnimation
+            scale: 1 / Screen.devicePixelRatio
+            width: parent.width * Screen.devicePixelRatio
+            height: parent.height * Screen.devicePixelRatio
+            transformOrigin: Item.TopLeft
 
-                property alias scale: scaleAnimation.to
-                property alias x: xAnimation.to
-                property alias y: yAnimation.to
+            SplitView.fillWidth: true
 
-                NumberAnimation { id: scaleAnimation; target: mapContainer; property: "scale"; easing.type: Easing.OutCubic; duration: 100 }
-                NumberAnimation { id: xAnimation; target: mapContainer; property: "x"; easing.type: Easing.OutCubic; duration: 100 }
-                NumberAnimation { id: yAnimation; target: mapContainer; property: "y"; easing.type: Easing.OutCubic; duration: 100 }
+            Item {
+                id: mapContainer
+
+                ParallelAnimation {
+                    id: containerAnimation
+
+                    property alias scale: scaleAnimation.to
+                    property alias x: xAnimation.to
+                    property alias y: yAnimation.to
+
+                    NumberAnimation { id: scaleAnimation; target: mapContainer; property: "scale"; easing.type: Easing.OutCubic; duration: 100 }
+                    NumberAnimation { id: xAnimation; target: mapContainer; property: "x"; easing.type: Easing.OutCubic; duration: 100 }
+                    NumberAnimation { id: yAnimation; target: mapContainer; property: "y"; easing.type: Easing.OutCubic; duration: 100 }
+                }
+
+                Component.onCompleted: {
+                    containerAnimation.scale = mapContainer.scale
+                    containerAnimation.x = mapContainer.x
+                    containerAnimation.y = mapContainer.y
+                }
+
+                Tiled.MapItem {
+                    id: mapItem
+                    map: mapLoader.map
+                    visibleArea: {
+                        var scale = mapContainer.scale
+                        Qt.rect(-mapContainer.x / scale,
+                                -mapContainer.y / scale,
+                                mapView.width / scale,
+                                mapView.height / scale);
+                    }
+                }
             }
 
-            Component.onCompleted: {
-                containerAnimation.scale = mapContainer.scale
-                containerAnimation.x = mapContainer.x
-                containerAnimation.y = mapContainer.y
-            }
+            DragArea {
+                id: singleFingerPanArea
+                anchors.fill: parent
 
-            Tiled.MapItem {
-                id: mapItem
-                map: mapLoader.map
-                visibleArea: {
-                    var scale = mapContainer.scale
-                    Qt.rect(-mapContainer.x / scale,
-                            -mapContainer.y / scale,
-                            mapView.width / scale,
-                            mapView.height / scale);
+                onDragged: {
+                    dx *= Screen.devicePixelRatio
+                    dy *= Screen.devicePixelRatio
+
+                    if (containerAnimation.running) {
+                        containerAnimation.stop()
+                        containerAnimation.x += dx
+                        containerAnimation.y += dy
+                        mapContainer.x += dx
+                        mapContainer.y += dy
+                        containerAnimation.start()
+                    } else {
+                        mapContainer.x += dx
+                        mapContainer.y += dy
+                    }
+                }
+
+                onWheel: {
+                    var scaleFactor = Math.pow(1.4, wheel.angleDelta.y / 120)
+                    var scale = Math.min(8, Math.max(0.25, containerAnimation.scale * scaleFactor))
+                    var anchor = mapToItem(mapContainer, wheel.x, wheel.y)
+                    var oldScale = mapContainer.scale
+                    var oldX = anchor.x * oldScale
+                    var oldY = anchor.y * oldScale
+                    var newX = anchor.x * scale
+                    var newY = anchor.y * scale
+
+                    containerAnimation.stop()
+                    containerAnimation.x = mapContainer.x - (newX - oldX)
+                    containerAnimation.y = mapContainer.y - (newY - oldY)
+                    containerAnimation.scale = scale
+                    containerAnimation.start()
                 }
             }
         }
-    }
 
-    DragArea {
-        id: singleFingerPanArea
-        anchors.fill: parent
-
-        onDragged: {
-            dx *= Screen.devicePixelRatio
-            dy *= Screen.devicePixelRatio
-
-            if (containerAnimation.running) {
-                containerAnimation.stop()
-                containerAnimation.x += dx
-                containerAnimation.y += dy
-                mapContainer.x += dx
-                mapContainer.y += dy
-                containerAnimation.start()
-            } else {
-                mapContainer.x += dx
-                mapContainer.y += dy
+        Pane {
+            Label {
+                text: "Tilesets"
             }
-        }
-
-        onWheel: {
-            var scaleFactor = Math.pow(1.4, wheel.angleDelta.y / 120)
-            var scale = Math.min(8, Math.max(0.25, containerAnimation.scale * scaleFactor))
-            var anchor = mapToItem(mapContainer, wheel.x, wheel.y)
-            var oldScale = mapContainer.scale
-            var oldX = anchor.x * oldScale
-            var oldY = anchor.y * oldScale
-            var newX = anchor.x * scale
-            var newY = anchor.y * scale
-
-            containerAnimation.stop()
-            containerAnimation.x = mapContainer.x - (newX - oldX)
-            containerAnimation.y = mapContainer.y - (newY - oldY)
-            containerAnimation.scale = scale
-            containerAnimation.start()
         }
     }
 

@@ -6,14 +6,14 @@ QtGuiApplication {
     name: "tiledquick"
     targetName: name
     builtByDefault: Environment.getEnv("BUILD_TILEDQUICK") == "true"
-    condition: Qt.core.versionMajor >= 6 || Qt.core.versionMinor > 10
+    condition: Qt.core.versionMajor >= 6 || Qt.core.versionMinor >= 13
 
     readonly property bool qtcRunnable: builtByDefault
 
     Depends {
         name: "Qt"
         submodules: ["core", "quick", "widgets"]
-        versionAtLeast: "5.10"
+        versionAtLeast: "5.13"
     }
     Depends {
         name: "tiledquickplugin"
